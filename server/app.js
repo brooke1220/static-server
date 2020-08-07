@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path')
 const app = express();
 const config = require('./config.js')
-const httpPorxtMiddleware = require('./lib/porxy.js')
+const httpPorxtMiddleware = require('./lib/proxy.js')
 
 let staticPath = [
     path.join(__dirname, '../Views'),
@@ -11,7 +11,7 @@ let staticPath = [
 
 staticPath.forEach(staticPath => app.use(express.static(staticPath)))
 
-httpPorxtMiddleware(config.porxy, middleware => app.use(middleware));
+httpPorxtMiddleware(config.proxy, middleware => app.use(middleware));
 
 app.listen(3000, () => {
     console.log('监听成功 地址为 http://localhost:3000')

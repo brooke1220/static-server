@@ -1,16 +1,16 @@
 const { createProxyMiddleware: httpProxyMiddleware } = require('http-proxy-middleware');
 
-function formatPorxy(porxys){
-    return Object.keys(porxys).map((context) => {
+function formatPorxy(proxys){
+    return Object.keys(proxys).map((context) => {
         let proxyOptions;
         const correctedContext = context.replace(/^\*$/, '**').replace(/\/\*$/, '');
-        if (typeof porxys[context] === 'string') {
+        if (typeof proxys[context] === 'string') {
           proxyOptions = {
             context: correctedContext,
-            target: porxys[context]
+            target: proxys[context]
           };
         } else {
-          proxyOptions = Object.assign({}, porxys[context]);
+          proxyOptions = Object.assign({}, proxys[context]);
           proxyOptions.context = correctedContext;
         }
         proxyOptions.logLevel = proxyOptions.logLevel || 'warn';
@@ -27,8 +27,8 @@ function getProxyMiddleware (proxyConfig) {
 }
 
 
-function porxyMiddleware(porxys, middleware){
-    porxys.forEach((proxyConfigOrCallback) => {
+function porxyMiddleware(proxys, middleware){
+    proxys.forEach((proxyConfigOrCallback) => {
         let proxyConfig;
 
         if (typeof proxyConfigOrCallback === 'function') {
@@ -63,7 +63,7 @@ function porxyMiddleware(porxys, middleware){
     });
 }
 
-module.exports = function(porxys, middleware){
-    if (!Array.isArray(porxys)) porxys = formatPorxy(porxys)
-    porxyMiddleware(porxys, porxyCallback => middleware(porxyCallback))
+module.exports = function(proxys, middleware){
+    if (!Array.isArray(proxys)) proxys = formatPorxy(proxys)
+    porxyMiddleware(proxys, porxyCallback => middleware(porxyCallback))
 }

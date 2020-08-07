@@ -1,5 +1,5 @@
 module.exports = {
-    porxy: {
+    proxy: {
         '/demo': {
             target: 'http://106.54.14.206',  //目标接口域名
             changeOrigin: true,  //是否跨域
