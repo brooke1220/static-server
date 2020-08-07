@@ -1,0 +1,17 @@
+{
+  "name": "fw_admin",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node server/app.js",
+    "start": "nodemon node server/app.js"
+  },
+  "author": "brooke",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "express": "^4.17.1",
+    "http-proxy-middleware": "^1.0.5",
+    "nodemon": "^2.0.4"
+  }
+}
