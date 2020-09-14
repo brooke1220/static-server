@@ -1,18 +1,25 @@
-const express = require('express');
-const path = require('path')
-const app = express();
-const config = require('./config.js')
+const express = require('express')
+const browsersync = require('./lib/browsersync.js')
 const httpPorxtMiddleware = require('./lib/proxy.js')
+const config = require('./config.js')
+const hook = require('./lib/hook')
+const { args } = require('./lib/util.js')
+const server = args.browsersync ? browsersync : express
+const app = server()
 
-let staticPath = [
-    path.join(__dirname, '../Views'),
-    path.join(__dirname, '../')
-]
+app.use(server.static(config.static_path))
 
-staticPath.forEach(staticPath => app.use(express.static(staticPath)))
-
-httpPorxtMiddleware(config.proxy, middleware => app.use(middleware));
-
-app.listen(3000, () => {
-    console.log('监听成功 地址为 http://localhost:3000')
+httpPorxtMiddleware(config.proxy, middleware => {
+	app.use(middleware)
 });
+
+hook.add(['start', 'app'], (globalData) => {
+	app.listen(config.port, () => {
+		console.log("监听成功地址为 http://localhost:" + config.port)
+		hook.listen('app_start', globalData)
+	});
+})
+
+app.hook = hook
+
+module.exports = app

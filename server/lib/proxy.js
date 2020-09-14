@@ -50,7 +50,7 @@ function porxyMiddleware(proxys, middleware){
               
             const bypass = typeof proxyConfig.bypass === 'function';
             const bypassUrl = bypass && proxyConfig.bypass(req, res, proxyConfig) || false;
-
+	
             if (bypassUrl) {
                 req.url = bypassUrl;
                 next();
